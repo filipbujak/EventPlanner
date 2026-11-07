@@ -30,7 +30,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'pythonanywhere.com']
 
 #Zdjecia na stronie
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Application definition
@@ -60,7 +60,7 @@ ROOT_URLCONF = 'eventplanner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,5 +133,8 @@ STATIC_ROOT= BASE_DIR / 'staticfiles'
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        
     },
+    
 }
+
