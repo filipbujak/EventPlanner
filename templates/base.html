@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}EventPlanner{% endblock %}</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; }
+        nav { display: flex; gap: 1rem; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; }
+        nav .spacer { flex: 1; }
+        nav form { margin: 0; }
+        button, input[type=submit] { cursor: pointer; padding: .4rem .9rem; }
+        .errorlist { color: #b00020; padding-left: 1rem; }
+        .helptext { color: #666; font-size: .85rem; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: .8rem 1rem; margin-bottom: .8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}"><strong>EventPlanner</strong></a>
+        <span class="spacer"></span>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Profil ({{ user.username }})</a>
+            {% if user.is_staff %}<a href="{% url 'admin:index' %}">Panel admina</a>{% endif %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Wyloguj</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+            <a href="{% url 'register' %}">Zarejestruj</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -13,6 +13,11 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ("username", "first_name", "email")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].help_text = "Od 3 do 30 znaków: litery, cyfry i @/./+/-/_"
+        # self.fields["username"].help_text = ""  # <- odkomentuj, żeby ukryć całkowicie
+
     def clean_email(self):
         email = self.cleaned_data["email"]
         if User.objects.filter(email__iexact=email).exists():

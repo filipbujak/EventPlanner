@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Event
+
+
+def home(request):
+    events = Event.objects.select_related("author")
+    return render(request, "events/home.html", {"events": events})

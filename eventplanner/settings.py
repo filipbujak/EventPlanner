@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'events',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,7 @@ MAILERS = {
     
 }
 
+#accounts foldery i logowanie
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
