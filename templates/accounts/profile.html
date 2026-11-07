@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %}
+{% block content %}
+<h1>Profil użytkownika</h1>
+
+<div class="card">
+    <p><strong>Nazwa użytkownika:</strong> {{ user.username }}</p>
+    <p><strong>Imię:</strong> {{ user.first_name|default:"—" }}</p>
+    <p><strong>E-mail:</strong> {{ user.email }}</p>
+    <p><strong>Konto założone:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
+    <p><strong>Ostatnie logowanie:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+    <p><a href="{% url 'password_change' %}">Zmień hasło</a></p>
+</div>
+
+<h2>Moje wydarzenia ({{ created_events.count }})</h2>
+{% for event in created_events %}
+    <div class="card">{{ event.title }} — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }} <em>({{ event.get_status_display }})</em></div>
+{% empty %}
+    <p>Nie dodałeś jeszcze żadnych wydarzeń.</p>
+{% endfor %}
+
+<h2>Wydarzenia, w których biorę udział ({{ joined_events.count }})</h2>
+{% for event in joined_events %}
+    <div class="card">{{ event.title }} — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }}</div>
+{% empty %}
+    <p>Nie zapisałeś się jeszcze na żadne wydarzenie.</p>
+{% endfor %}
+{% endblock %}

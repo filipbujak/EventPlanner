@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Wydarzenia</h1>
+{% for event in events %}
+    <div class="card">
+        <strong>{{ event.title }}</strong> <em>({{ event.get_status_display }})</em><br>
+        {{ event.time|date:"d.m.Y H:i" }} · {{ event.place }} · autor: {{ event.author.username }}
+    </div>
+{% empty %}
+    <p>Brak wydarzeń.</p>
+{% endfor %}
+{% endblock %}
