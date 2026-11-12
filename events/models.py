@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-
+from django.urls import reverse
+from django.utils import timezone
 class Event(models.Model):
     STATUS_CHOICES = [
         ('propozycje', 'Propozycja'),
@@ -40,10 +41,22 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse("event_detail", args=[self.pk])
+
+    @property
+    def is_past(self):
+        return self.time < timezone.now()
+
+    def can_edit(self, user):
+        """Edytować/usuwać może autor albo administrator."""
+        return user.is_authenticated and (user == self.author or user.is_staff)
+
     class Meta:
         verbose_name = "Wydarzenie"
         verbose_name_plural = "Wydarzenia"
         ordering = ['time']
+
 
 
 class Vote(models.Model):

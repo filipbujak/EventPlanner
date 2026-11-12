@@ -14,14 +14,14 @@
 
 <h2>Moje wydarzenia ({{ created_events.count }})</h2>
 {% for event in created_events %}
-    <div class="card">{{ event.title }} — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }} <em>({{ event.get_status_display }})</em></div>
+    <div class="card"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a> — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }} <em>({{ event.get_status_display }})</em></div>
 {% empty %}
     <p>Nie dodałeś jeszcze żadnych wydarzeń.</p>
 {% endfor %}
 
 <h2>Wydarzenia, w których biorę udział ({{ joined_events.count }})</h2>
 {% for event in joined_events %}
-    <div class="card">{{ event.title }} — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }}</div>
+    <div class="card"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a> — {{ event.time|date:"d.m.Y H:i" }}, {{ event.place }}</div>
 {% empty %}
     <p>Nie zapisałeś się jeszcze na żadne wydarzenie.</p>
 {% endfor %}

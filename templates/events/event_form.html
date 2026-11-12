@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{% if event %}Edycja wydarzenia{% else %}Nowe wydarzenie{% endif %}{% endblock %}
+{% block content %}
+<h1>{% if event %}Edycja: {{ event.title }}{% else %}Nowe wydarzenie{% endif %}</h1>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if event %}Zapisz zmiany{% else %}Utwórz wydarzenie{% endif %}</button>
+    <a href="{% if event %}{{ event.get_absolute_url }}{% else %}{% url 'home' %}{% endif %}">Anuluj</a>
+</form>
+{% endblock %}

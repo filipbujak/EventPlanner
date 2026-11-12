@@ -13,11 +13,23 @@
         .errorlist { color: #b00020; padding-left: 1rem; }
         .helptext { color: #666; font-size: .85rem; }
         .card { border: 1px solid #ddd; border-radius: 8px; padding: .8rem 1rem; margin-bottom: .8rem; }
+        .muted { color: #666; font-size: .9rem; }
+        .messages { list-style: none; padding: 0; }
+        .messages li { background: #e6f4ea; border: 1px solid #b7dfc2; border-radius: 6px; padding: .5rem .8rem; margin-bottom: .5rem; }
+        .filters { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+        .filters a.active { font-weight: bold; }
+        .danger { color: #b00020; }
+        .event-photo { max-width: 100%; max-height: 400px; border-radius: 8px; }
+        .thumb { float: right; max-width: 120px; max-height: 90px; border-radius: 6px; margin-left: 1rem; }
+        .clear { clear: both; }
     </style>
 </head>
 <body>
-    <nav>
+        <nav>
         <a href="{% url 'home' %}"><strong>EventPlanner</strong></a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'event_create' %}">+ Dodaj wydarzenie</a>
+        {% endif %}
         <span class="spacer"></span>
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Profil ({{ user.username }})</a>
@@ -31,6 +43,12 @@
             <a href="{% url 'register' %}">Zarejestruj</a>
         {% endif %}
     </nav>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+    {% endif %}
 
     {% block content %}{% endblock %}
 </body>

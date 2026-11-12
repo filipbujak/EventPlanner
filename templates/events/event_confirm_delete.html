@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Usuń wydarzenie{% endblock %}
+{% block content %}
+<h1>Usunąć wydarzenie?</h1>
+<p>Czy na pewno chcesz usunąć <strong>{{ event.title }}</strong> ({{ event.time|date:"d.m.Y H:i" }})?
+   Tej operacji nie można cofnąć.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="danger">Tak, usuń</button>
+    <a href="{{ event.get_absolute_url }}">Anuluj</a>
+</form>
+{% endblock %}

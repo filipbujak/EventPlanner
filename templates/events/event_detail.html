@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<h1>{{ event.title }}</h1>
+<p><em>{{ event.get_status_display }}{% if event.is_past %} · wydarzenie zakończone{% endif %}</em></p>
+
+{% if event.photo %}
+    <p><img class="event-photo" src="{{ event.photo.url }}" alt="{{ event.title }}"></p>
+{% endif %}
+
+<div class="card">
+    <p><strong>Kiedy:</strong> {{ event.time|date:"l, d.m.Y H:i" }}</p>
+    <p><strong>Gdzie:</strong> {{ event.place }}</p>
+    <p><strong>Autor:</strong> {{ event.author.username }}</p>
+    <p><strong>Uczestnicy:</strong> {{ event.participants.count }}</p>
+</div>
+
+<p>{{ event.description|linebreaksbr }}</p>
+
+<p class="muted">
+    Dodano {{ event.created_at|date:"d.m.Y H:i" }}
+    {% if event.updated_at|date:"YmdHi" != event.created_at|date:"YmdHi" %}
+        · edytowano {{ event.updated_at|date:"d.m.Y H:i" }}
+    {% endif %}
+</p>
+
+{% if can_edit %}
+    <p>
+        <a href="{% url 'event_edit' event.pk %}">Edytuj</a> ·
+        <a class="danger" href="{% url 'event_delete' event.pk %}">Usuń</a>
+    </p>
+{% endif %}
+
+<p><a href="{% url 'home' %}">← Wróć do listy</a></p>
+{% endblock %}

@@ -1,12 +1,43 @@
 {% extends "base.html" %}
+{% block title %}Wydarzenia{% endblock %}
 {% block content %}
 <h1>Wydarzenia</h1>
-{% for event in events %}
+
+<form method="get" class="filters">
+    <input type="hidden" name="when" value="{{ when }}">
+    <input type="search" name="q" value="{{ q }}" placeholder="Szukaj po tytule, opisie, miejscu...">
+    <button type="submit">Szukaj</button>
+    {% if q %}<a href="?when={{ when }}">wyczyść</a>{% endif %}
+</form>
+
+<div class="filters">
+    <a href="?when=upcoming&q={{ q|urlencode }}" {% if when == "upcoming" %}class="active"{% endif %}>Nadchodzące</a>
+    <a href="?when=past&q={{ q|urlencode }}" {% if when == "past" %}class="active"{% endif %}>Minione</a>
+    <a href="?when=all&q={{ q|urlencode }}" {% if when == "all" %}class="active"{% endif %}>Wszystkie</a>
+</div>
+
+{% for event in page_obj %}
     <div class="card">
-        <strong>{{ event.title }}</strong> <em>({{ event.get_status_display }})</em><br>
-        {{ event.time|date:"d.m.Y H:i" }} · {{ event.place }} · autor: {{ event.author.username }}
+        {% if event.photo %}<img class="thumb" src="{{ event.photo.url }}" alt="">{% endif %}
+        <a href="{{ event.get_absolute_url }}"><strong>{{ event.title }}</strong></a>
+        <em>({{ event.get_status_display }}{% if event.is_past %}, zakończone{% endif %})</em><br>
+        <span class="muted">{{ event.time|date:"d.m.Y H:i" }} · {{ event.place }} · autor: {{ event.author.username }}</span>
+        <p>{{ event.description|truncatewords:25 }}</p>
+        <div class="clear"></div>
     </div>
 {% empty %}
     <p>Brak wydarzeń.</p>
 {% endfor %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+    <p>
+        {% if page_obj.has_previous %}
+            <a href="?when={{ when }}&q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}">« Poprzednia</a>
+        {% endif %}
+        Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+        {% if page_obj.has_next %}
+            <a href="?when={{ when }}&q={{ q|urlencode }}&page={{ page_obj.next_page_number }}">Następna »</a>
+        {% endif %}
+    </p>
+{% endif %}
 {% endblock %}
